@@ -38,7 +38,9 @@ This repository contains a C++ program for bank system
     
     - Now you can access debugging.cpp. 
 
-    - for compiling the program
+    **for compiling the program**
+
+    - debugging.cpp file is for visualizing name, SSN, DOB. 
 
     ```
     g++ -std=c++11 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -lssl -lcrypto debugging.cpp -o debugging
@@ -46,6 +48,15 @@ This repository contains a C++ program for bank system
     ./debugging  
 
     ```
+
+    - debugging2.cpp file is for visualizing how unordered_map inserts names, SSN, SOB into the index, and then we search for the name. 
+
+    ```
+    g++ -std=c++11 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -lssl -lcrypto debugging2.cpp -o debugging2
+
+    ./debugging2
+    ```
+
 
 5. **Compile the Program:**
     - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.
