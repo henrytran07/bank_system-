@@ -1,6 +1,6 @@
 
-#ifndef CARD.H
-#define CARD.H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
 #include <iostream> 
 
