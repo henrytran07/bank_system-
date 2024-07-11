@@ -26,7 +26,18 @@ This repository contains a C++ program for bank system
     ```
         openssl version
     ```
-4. **Compile the Program:**
+
+4. **Debugging the Program (for Mario):**
+
+    ```
+    cd bank_system-
+
+    cd customer-information
+
+    ```
+    
+    - Now you can access debugging.cpp. 
+5. **Compile the Program:**
     - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.
     - Example: 
     ```
@@ -38,7 +49,7 @@ This repository contains a C++ program for bank system
 
     ```
 
-5. **Run the Program:**
+6. **Run the Program:**
     - Execute the compiled program:
     ```
         ./customer_information
