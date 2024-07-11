@@ -14,7 +14,8 @@ This repository contains a C++ program for bank system
 ```
     git clone https://github.com/henrytran07/bank_system-.git
 ```
-    - this will download the repository to your local machine
+     
+- This will download the repository to your local machine
 
 3. **Download OpenSSL**
     - Install OpenSSL 
@@ -26,9 +27,13 @@ This repository contains a C++ program for bank system
         openssl version
     ```
 4. **Compile the Program:**
+    - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.
     - Example: 
     ```
-        g++ -std=c++11 -o customer_information customer_information.cpp -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -lssl -lcrypto
+    cd customer_information
+
+    g++ -std=c++11 -o customer_information customer_information.cpp -I$(brew --prefix openssl)/include -L$(brew --prefix openssl)/lib -lssl -lcrypto
+
     ```
 
 5. **Run the Program:**
