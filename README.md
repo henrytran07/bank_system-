@@ -30,7 +30,7 @@ This repository contains a C++ program for bank system
     - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.
     - Example: 
     ```
-    cd customer_information
+    cd customer-information
 
     g++ -std=c++11 -o customer_information customer_information.cpp -I$(brew --prefix openssl)/include -L$(brew --prefix openssl)/lib -lssl -lcrypto
 
