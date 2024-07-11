@@ -28,8 +28,8 @@ class Person{
         string name;
         string date_of_birth; 
         string social_security_number; 
-
-        unordered_map<vector<unsigned char>, tuple<string, string, string>> table[MAXIMUM_PEOPLE]; 
+        
+        unordered_map<size_t, unordered_map<vector<unsigned char>, tuple<string, string, string>>> table[MAXIMUM_PEOPLE];
         
         string search(const vector<unsigned char>& key);
     public: 

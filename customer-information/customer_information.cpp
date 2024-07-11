@@ -16,7 +16,19 @@
 #include <string>
 
 using namespace std; 
-
+namespace std {
+    template<> struct hash<vector<unsigned char>> {
+        size_t operator()(const vector<unsigned char>& vec) const {
+            // Implement a hash function for std::vector<unsigned char>
+            // Example implementation: using a simple hash_combine method
+            size_t hash = 0;
+            for (unsigned char byte : vec) {
+                hash ^= std::hash<unsigned char>{}(byte) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+            }
+            return hash;
+        }
+    };
+}
 random_device Person::rd;
 mt19937 Person::gen(rd());
 

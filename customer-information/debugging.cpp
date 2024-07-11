@@ -35,6 +35,7 @@ public:
     string getSSN() const;
     size_t hashFunction(const vector<unsigned char> &key);
     vector<unsigned char> generate_key_for_table(); // Updated method declaration
+    
 private:
     void generated_people();
     string name_generator();
