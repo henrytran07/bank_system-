@@ -37,6 +37,16 @@ This repository contains a C++ program for bank system
     ```
     
     - Now you can access debugging.cpp. 
+
+    - for compiling the program
+
+    ```
+    g++ -std=c++11 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -lssl -lcrypto debugging.cpp -o debugging
+
+    ./debugging  
+
+    ```
+
 5. **Compile the Program:**
     - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.
     - Example: 
