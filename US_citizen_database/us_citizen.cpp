@@ -1,4 +1,4 @@
-#include "customer_information.h"
+#include "us_citizen.h"
 #include <iostream>
 #include <random>
 #include <numeric>
@@ -13,7 +13,7 @@
 #include <openssl/rand.h>
 #include <openssl/err.h>
 #include <string>
-
+#include <unordered_map>
 using namespace std;
 namespace std
 {
@@ -62,10 +62,13 @@ void Person::generated_people()
         social_security_number = ssn_generator();
 
         PersonalInfo personal_info(name, date_of_birth, social_security_number);
-        vector<unsigned char> key = generate_key_for_table();
+        vector<unsigned char> encrypted_key; 
+        encrypted_key = generate_key_for_table();
+        
+
         tuple<string, string, string> value;
         value = personal_info.getPersonalInfo();
-        table_insert(key, value);
+        table_insert(encrypted_key, value);
     }
 }
 int Person::random_number(int low, int high)
@@ -153,7 +156,7 @@ void handleErrors()
     abort();
 }
 
-void generateKeyAndIV(vector<unsigned char> &key, vector<unsigned char> &iv)
+void Person:: generateKeyAndIV(vector<unsigned char> &key, vector<unsigned char> &iv)
 {
     if (!RAND_bytes(key.data(), key.size()))
         handleErrors();
@@ -161,10 +164,9 @@ void generateKeyAndIV(vector<unsigned char> &key, vector<unsigned char> &iv)
         handleErrors();
 }
 
-vector<unsigned char> encrypt(tuple<string, string, string> &value, const vector<unsigned char> &key, const vector<unsigned char> &iv)
+vector<unsigned char> Person:: encrypt(string &personal_info, const vector<unsigned char> &key, const vector<unsigned char> &iv)
 {
-    EVP_CIPHER_CTX *ctx;
-    string personal_info = get<0>(value) + " " + get<1>(value) + " " + get<2>(value);
+    EVP_CIPHER_CTX *ctx = nullptr;
     vector<unsigned char> ciphertext(personal_info.size() + AES_BLOCK_SIZE);
 
     int len, ciphertext_len;
@@ -202,30 +204,34 @@ vector<unsigned char> Person::generate_key_for_table()
 
     tuple<string, string, string> value;
     value = personal_info.getPersonalInfo();
-    vector<unsigned char> ciphertext = encrypt(value, key, iv);
+    string value_str = get<0> (value) + " " + get<1> (value) + " " + get<2> (value);
+    vector<unsigned char> ciphertext = encrypt(value_str, key, iv);
+
+    return ciphertext; 
 }
 
 void Person::table_insert(const vector<unsigned char> &key, const tuple<string, string, string> &value)
 {
-    size_t index = hashFunction(key);
+    size_t index = hashFunction(key) % MAXIMUM_PEOPLE;
     size_t original_index = index;
     auto &map = table[index];
     auto it = map.find(key);
 
-    if (it == map.end())
+    while (it != map.end())
     {
-        map[key] = value;
-        return;
-    }
-    else
-    {
-        index = (index + 1) % (MAXIMUM_PEOPLE);
+        index = (index + 1) % MAXIMUM_PEOPLE;
         if (index == original_index)
         {
+            cout << "Table is full" << endl;
             return;
         }
+        map = table[index];
+        it = map.find(key);
     }
+
+    map[key] = value;
 }
+
 
 string Person::search(const vector<unsigned char> &key)
 {
@@ -249,6 +255,7 @@ string Person::search(const vector<unsigned char> &key)
         auto it = map.find(key);
 
         if (it != map.end())
+
         {
             auto &value = it->second;
             string personal_info = get<0>(value) + " " + get<1>(value) + " " + get<2>(value);

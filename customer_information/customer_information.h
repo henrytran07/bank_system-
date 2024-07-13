@@ -10,7 +10,7 @@ using namespace std;
 struct PersonalInfo; 
 struct AccountInfo; 
 class Customer: public Person {
-    private: 
+    public: 
         string customer_name, customer_SSN, customer_dob;
         string user_name, password;
         unordered_map<size_t, unordered_map<vector<unsigned char>, tuple<string, string>> > customer_storage; 
@@ -20,9 +20,7 @@ class Customer: public Person {
         void banking_account();
         string customer_account() const; 
         void customer_information(); 
-        void table_insert(const vector<unsigned char>& key, const tuple<string, string>& value);
-    
-        
+        void table_insert(const vector<unsigned char>& key, const tuple<string, string>& value);   
              
 };
 

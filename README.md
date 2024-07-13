@@ -32,13 +32,13 @@ This repository contains a C++ program for bank system
     ```
     cd bank_system-
 
-    cd customer-information
+    cd US_citizen_database
 
     ```
     
     - Now you can access debugging.cpp. 
 
-    **for compiling the program**
+    **for compiling the program (US_citizen folder)**
 
     - debugging.cpp file is for visualizing name, SSN, DOB. 
 
@@ -57,6 +57,13 @@ This repository contains a C++ program for bank system
     ./debugging2
     ```
 
+    **for compiling the program(customer_information folder)**
+
+    ```
+    g++ -std=c++11 -o customer_information.o customer_information/debugging.cpp US_citizen_database/us_citizen.cpp -lssl -lcrypto
+
+    ./customer_information.o
+    ```
 
 5. **Compile the Program:**
     - Navigate to the directory of the specific component (e.g.,    customer_information) using cd.

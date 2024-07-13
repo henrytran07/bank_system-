@@ -224,7 +224,7 @@ void Customer:: customer_information(){
     }  
 }
 
-void Customer::table_insert(const vector<unsigned char>& key, tuple<string, string>& value){
+void Customer::table_insert(const vector<unsigned char>& key, const tuple<string, string>& value){
     size_t index = hashFunction(key);
     size_t original_index = index; 
 
