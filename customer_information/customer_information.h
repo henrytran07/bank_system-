@@ -20,8 +20,8 @@ class Customer: public Person {
         void banking_account();
         string customer_account() const; 
         void customer_information(); 
-        void table_insert(const vector<unsigned char>& key, tuple<string, string>& value);
-    public: 
+        void table_insert(const vector<unsigned char>& key, const tuple<string, string>& value);
+    
         
              
 };

@@ -4,6 +4,8 @@
 #include <vector> 
 #include <tuple>
 #include <fstream> 
+#include <sstream> 
+#include <stdexcept> 
 using namespace std; 
 
 namespace std
@@ -43,32 +45,117 @@ struct AccountInfo {
     }
 };
 
+bool checkName(string customer_name){
+    string first_name, last_name; 
+    stringstream ss(customer_name);
 
+    if (!(ss >> first_name >> last_name)){
+        return false; 
+    }
+
+    string remaining;
+
+    if (ss >> remaining)
+        return false; 
+    
+    return true; 
+}
+
+bool checkDOB(string &date_of_birth){
+    int year, month, day; 
+    char delimeter1, delimeter2; 
+
+    stringstream ss(date_of_birth);
+
+    if (!(ss >> year >> delimeter1 >> month >> delimeter2 >> year)){
+        throw invalid_argument("Invalid date format.");
+        return false; 
+    }
+        
+    
+    if (delimeter1 != '-' || delimeter2 != '-'){
+        throw invalid_argument("Invalid date format. ");
+        return false; 
+    }
+        
+    if (year < 1924 || year > 1924){
+        throw invalid_argument("Invalid year");
+        return false; 
+    } 
+       
+
+    if (month < 1 || month > 12){
+        throw invalid_argument("Invalid month");
+        return false; 
+    }
+        
+
+    if (day < 1 || day > 31){
+        throw invalid_argument("Invalid day");
+        return false; 
+    }   
+    bool is_leap_year = (year % 4 == 0);
+    if (month == 2){
+        if (is_leap_year && day > 28){
+            throw invalid_argument("Invalid day");
+            return false;
+        }
+        if ((!is_leap_year) && day > 29){
+            throw invalid_argument("Invalid day");
+            return false; 
+        }     
+    }
+
+    return true; 
+}
+
+bool checkSSN(string ssn){
+    stringstream ss(ssn);
+    char delimeter1, delimeter2; 
+    int num[9]; 
+    int num1, num2, num3;
+
+    if (!(ss >> num1 >> delimeter1 >> num2 >> delimeter2 >> num3)){
+        throw invalid_argument("Invalid format");
+        return false; 
+    }
+
+    if (delimeter1 != '-' || delimeter2 != '-'){
+        throw invalid_argument("Invalid format");
+        return false; 
+    }
+    return true; 
+}
 
 void Customer:: user_input(){
     cout << "Welcome to our banking system. Please verify your identity. " << endl; 
 
-    cout << "First step: Please enter your full name (first name + last name): ";
-    getline(cin, customer_name);
+    do {
+        cout << "First step: Please enter your full name (first name + last name): ";
+        getline(cin, customer_name);
+    } while ((!checkName(customer_name)));
 
-    cout << "Second step: Please enter your date of birth(year-month-day): " ;
-    getline(cin, customer_dob);
+    do {
+        cout << "Second step: Please enter your date of birth(year-month-day): " ;
+        getline(cin, customer_dob);
+    } while ((!checkDOB(customer_dob)));
+ 
+    do {
+        cout << "Third step: Please enter your social security number (xxx-xx-xxxx): ";
+        getline(cin, customer_SSN);
+    } while (!checkSSN(customer_SSN));
 
-    cout << "Third step: Please enter your social security number (xxx-xx-xxxx): ";
-    getline(cin, customer_SSN);
 }
 
 bool Customer:: ID_verification() {
   
     PersonalInfo person(customer_name, customer_dob, customer_SSN); 
 
-    vector<unsigned char> key, iv, encrypt_key; 
-    key = generate_key_for_table();
-    generateKeyAndIV(key, iv);
+    vector<unsigned char> encrypt_key; 
+    encrypt_key = generate_key_for_table();
     tuple<string, string, string> value; 
     value = person.myPersonalInfo();
-    string value_string = get<0> (value) + get<1> (value) + get<2> (value); 
-    encrypt_key = encrypt(value_string, key, iv);
+
 
     string result = search(encrypt_key);
 
@@ -121,10 +208,8 @@ void Customer:: customer_information(){
     string customer; 
     customer = customer_account();
 
-    vector<unsigned char> key, iv, key_encrypt; 
-    key = generate_key_for_table();
-    generateKeyAndIV(key, iv);
-    key_encrypt = encrypt(customer, key, iv);
+    vector<unsigned char>  key_encrypt; 
+    key_encrypt = generate_key_for_table();
 
     ofstream outputFile; 
     outputFile.open("customer_information.txt", ios::app);
